@@ -20,10 +20,12 @@ main{max-width:900px;margin:auto;padding:16px 14px 40px}
 .btn{display:inline-block;background:var(--gold);color:var(--g1);border:0;padding:11px 16px;border-radius:8px;font-weight:700;font-size:15px;cursor:pointer}
 .btn.g{background:var(--g2);color:#fff}
 .bar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.back{display:inline-block;color:var(--g2);font-weight:600;margin-top:6px}
 h3{margin:20px 0 10px;font-size:19px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
-.cat{background:#fff;border:1px solid var(--bd);border-radius:10px;padding:16px 8px;text-align:center;font-weight:700}
-.cat small{display:block;color:var(--mu);font-weight:400}
+.cat{background:#fff;border:1px solid var(--bd);border-radius:10px;padding:20px 8px;text-align:center;font-weight:700}
+.row{display:block;background:#fff;border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:8px;font-weight:600}
+.row:after{content:"›";float:right;color:var(--g2);font-size:20px;line-height:1}
 .item{background:#fff;border:1px solid var(--bd);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:10px}
 .item small{color:var(--mu);display:block}
 .item a.dl{background:var(--g2);color:#fff;border-radius:6px;padding:8px 12px;font-size:13px}
@@ -35,7 +37,7 @@ h3{margin:20px 0 10px;font-size:19px}
 .ad{background:#eef2f0;border:1px dashed #b5c4be;color:var(--mu);text-align:center;padding:16px;margin:14px 0;border-radius:8px;font-size:13px}
 .pg{display:flex;justify-content:space-between;align-items:center;margin:16px 0}
 .score{text-align:center;font-size:22px;padding:20px}
-.empty{color:var(--mu);padding:16px;text-align:center}
+.empty{color:var(--mu);padding:20px;text-align:center;direction:rtl}
 .form input,.form textarea{width:100%;padding:11px;border:1px solid var(--bd);border-radius:8px;margin-bottom:10px;font-size:15px;font-family:inherit}
 footer{text-align:center;color:var(--mu);font-size:13px;padding:20px}
 </style></head>
@@ -46,26 +48,28 @@ footer{text-align:center;color:var(--mu);font-size:13px;padding:20px}
 <footer>© 2026 TestMasterPK</footer>
 <script src="data.js"></script>
 <script src="subjects.js"></script>
+<script src="tree.js"></script>
 <script>
-const $=s=>document.querySelector(s),app=$("#app");
+const $=s=>document.querySelector(s),app=$("#app"),enc=encodeURIComponent;
 const PAGES=[["home","Home"],["mcqs","MCQs"],["papers","Past Papers"],["mocks","Mock Tests"],["notes","PDF Notes"],["jobs","Jobs"],["affairs","Current Affairs"],["contact","Contact"]];
 $("#nav").innerHTML=PAGES.map(p=>`<a href="#${p[0]}" data-p="${p[0]}">${p[1]}</a>`).join("");
 /* اشتہار: AdSense کوڈ یہاں پیسٹ کریں۔ اشتہار ہر 5 سوالوں کے بعد آتا ہے۔ */
 const AD_HTML=`<div class="ad">Advertisement - AdSense code here</div>`;
-const AD_EVERY=5, PER=10;
-const SETS={...DEPTS,...SUBJECTS};
+const AD_EVERY=5,PER=10,SETS={...DEPTS,...SUBJECTS};
 const parse=s=>{const p=s.split("|");return{q:p[0],o:p.slice(1,5),a:+p[5],u:p[6]||"",e:p[7]||""}};
-const qs=n=>(SETS[n]||[]).map(parse);
-const all=()=>Object.keys(SETS).flatMap(d=>qs(d).map(m=>({...m,d})));
+const names=t=>Object.keys(TREE).filter(n=>TREE[n].t===t);
+const leafQ=(n,k)=>{let a=LEAF[n+"/"+k];if(a===undefined)a=(TREE[n]&&TREE[n].k[0]===k)?(SETS[n]||[]):[];return a.map(parse)};
+const leaves=()=>Object.keys(TREE).flatMap(n=>TREE[n].k.map(k=>[n,k]));
+const all=()=>leaves().flatMap(([n,k])=>leafQ(n,k).map(m=>({...m,n,k})));
 const list=(a,b)=>a.length?a.map(x=>`<div class="item"><div>${x[0]}<small>${x[1]}</small></div><a class="dl" href="${x[2]}" target="_blank">${b}</a></div>`).join(""):`<div class="empty">No items yet.</div>`;
-const grid=o=>`<div class="grid">${Object.keys(o).map(d=>`<a class="cat" href="#set/${encodeURIComponent(d)}">${d}<small>${o[d].length} MCQs</small></a>`).join("")}</div>`;
+const grid=a=>`<div class="grid">${a.map(n=>`<a class="cat" href="#set/${enc(n)}">${n}</a>`).join("")}</div>`;
 function mcqHTML(a,start){return a.map((m,i)=>`<div class="q" data-a="${m.a}"><b>${start+i+1}. ${m.q}</b>${m.u?`<div class="ur">${m.u}</div>`:""}${m.o.map((o,j)=>`<button class="opt" data-j="${j}">${o}</button>`).join("")}${m.e?`<div class="ex">${m.e}</div>`:""}</div>${(start+i+1)%AD_EVERY===0?AD_HTML:""}`).join("")}
 function reveal(q,pick){const a=+q.dataset.a,o=q.querySelectorAll(".opt");q.dataset.done=1;o[a].classList.add("ok");if(pick!==undefined&&pick!==a)o[pick].classList.add("no");const e=q.querySelector(".ex");if(e)e.style.display="block"}
 function bind(){document.querySelectorAll(".q[data-a]").forEach(q=>q.onclick=e=>{const b=e.target.closest(".opt");if(!b||q.dataset.done)return;reveal(q,+b.dataset.j)});
   const sa=$("#sa");if(sa)sa.onclick=()=>document.querySelectorAll(".q[data-a]").forEach(q=>reveal(q))}
 let M=null;
 function runMock(){
-  if(!M.q.length){app.innerHTML=`<div class="empty">No questions yet.</div>`;return}
+  if(!M.q.length){app.innerHTML=`<div class="empty">اس کے MCQs جلد شامل کیے جائیں گے۔</div>`;return}
   if(M.i>=M.q.length){app.innerHTML=`<div class="score">${M.t}<br><b>Score: ${M.s} / ${M.q.length}</b></div><a class="btn" href="#mocks">Back to Mock Tests</a>${AD_HTML}`;return}
   const q=M.q[M.i];
   app.innerHTML=`<h3>${M.t}</h3><div class="q"><b>Question ${M.i+1} of ${M.q.length}<br>${q.q}</b>${q.u?`<div class="ur">${q.u}</div>`:""}${q.o.map((o,j)=>`<button class="opt" data-j="${j}">${o}</button>`).join("")}</div>`;
@@ -77,27 +81,32 @@ function runMock(){
 const V={
 home(){app.innerHTML=`<div class="hero"><h2>Prepare Smarter, Achieve More!</h2><p>Free Online Study Resources for Pakistan Government Job Tests.</p>
 <div class="sb"><input id="s" placeholder="Search MCQs, Past Papers, Jobs..."><button class="btn" id="sg">Search</button></div></div>
-<div id="res"></div><h3>Departments</h3>${grid(DEPTS)}<h3>Subjects</h3>${grid(SUBJECTS)}${AD_HTML}
+<div id="res"></div><h3>Departments</h3>${grid(names("d"))}<h3>Subjects</h3>${grid(names("s"))}${AD_HTML}
 <h3>Latest Jobs</h3>${list(JOBS.slice(0,3),"Details")}`;
   const go=()=>{const k=$("#s").value.trim().toLowerCase();if(!k){$("#res").innerHTML="";return}
-    const r=[...all().filter(m=>m.q.toLowerCase().includes(k)).map(m=>[m.q,"MCQ - "+m.d,"#set/"+encodeURIComponent(m.d)]),...[...PAPERS,...JOBS,...NOTES].filter(x=>x[0].toLowerCase().includes(k))];
+    const r=[...all().filter(m=>m.q.toLowerCase().includes(k)).map(m=>[m.q,m.n+" - "+m.k,`#leaf/${enc(m.n)}/${enc(m.k)}`]),...[...PAPERS,...JOBS,...NOTES].filter(x=>x[0].toLowerCase().includes(k))];
     $("#res").innerHTML=`<h3>Results</h3>${r.length?list(r.slice(0,20),"Open"):'<div class="empty">Nothing found.</div>'}`};
   $("#sg").onclick=go;$("#s").onkeydown=e=>{if(e.key==="Enter")go()}},
-mcqs(){app.innerHTML=`<h3>MCQs by Department</h3>${grid(DEPTS)}${AD_HTML}<h3>MCQs by Subject</h3>${grid(SUBJECTS)}`},
-set(n,pg){if(!SETS[n])return location.hash="mcqs";
-  const a=qs(n),pages=Math.max(1,Math.ceil(a.length/PER)),p=Math.min(Math.max(+pg||1,1),pages),st=(p-1)*PER,e=encodeURIComponent(n);
-  app.innerHTML=`<h3>${n} MCQs</h3><div class="bar"><a class="btn" href="#mock/${e}">Start Mock Test</a><button class="btn g" id="sa">Show All Answers</button></div>${AD_HTML}${mcqHTML(a.slice(st,st+PER),st)}
-  <div class="pg">${p>1?`<a class="btn g" href="#set/${e}/${p-1}">Previous</a>`:"<span></span>"}<span>Page ${p} of ${pages}</span>${p<pages?`<a class="btn" href="#set/${e}/${p+1}">Next</a>`:"<span></span>"}</div>`;bind()},
-mocks(){app.innerHTML=`<h3>Mock Tests</h3>${AD_HTML}${Object.keys(SETS).map(d=>`<div class="item"><div>${d} Mock Test<small>${SETS[d].length} questions</small></div><a class="dl" href="#mock/${encodeURIComponent(d)}">Start</a></div>`).join("")}`},
-mock(n){M={t:n+" Mock Test",q:qs(n),i:0,s:0};runMock()},
+mcqs(){app.innerHTML=`<h3>MCQs by Department</h3>${grid(names("d"))}${AD_HTML}<h3>MCQs by Subject</h3>${grid(names("s"))}`},
+set(n){if(!TREE[n])return location.hash="mcqs";
+  const d=TREE[n].t==="d";
+  app.innerHTML=`<a class="back" href="#mcqs">← Back</a><h3>${n}</h3><p style="color:var(--mu);margin-bottom:10px">${d?"Select a post":"Select a chapter"}</p>${TREE[n].k.map(k=>`<a class="row" href="#leaf/${enc(n)}/${enc(k)}">${k}</a>`).join("")}${AD_HTML}`},
+leaf(n,k,pg){if(!TREE[n])return location.hash="mcqs";
+  const a=leafQ(n,k),pages=Math.max(1,Math.ceil(a.length/PER)),p=Math.min(Math.max(+pg||1,1),pages),st=(p-1)*PER,b=`#leaf/${enc(n)}/${enc(k)}`;
+  if(!a.length){app.innerHTML=`<a class="back" href="#set/${enc(n)}">← Back</a><h3>${n} - ${k}</h3><div class="empty">اس کے MCQs جلد شامل کیے جائیں گے۔</div>${AD_HTML}`;return}
+  app.innerHTML=`<a class="back" href="#set/${enc(n)}">← Back</a><h3>${n} - ${k}</h3><div class="bar"><a class="btn" href="#mock/${enc(n)}/${enc(k)}">Start Mock Test</a><button class="btn g" id="sa">Show All Answers</button></div>${AD_HTML}${mcqHTML(a.slice(st,st+PER),st)}
+  <div class="pg">${p>1?`<a class="btn g" href="${b}/${p-1}">Previous</a>`:"<span></span>"}<span>Page ${p} of ${pages}</span>${p<pages?`<a class="btn" href="${b}/${p+1}">Next</a>`:"<span></span>"}</div>`;bind()},
+mocks(){const L=leaves().filter(([n,k])=>leafQ(n,k).length);
+  app.innerHTML=`<h3>Mock Tests</h3>${AD_HTML}${L.map(([n,k])=>`<div class="item"><div>${n} - ${k}<small>Mock Test</small></div><a class="dl" href="#mock/${enc(n)}/${enc(k)}">Start</a></div>`).join("")||'<div class="empty">Coming soon.</div>'}`},
+mock(n,k){M={t:n+" - "+k,q:leafQ(n,k),i:0,s:0};runMock()},
 papers(){app.innerHTML=`<h3>Past Papers</h3>${AD_HTML}${list(PAPERS,"Download")}`},
 notes(){app.innerHTML=`<h3>PDF Notes</h3>${AD_HTML}${list(NOTES,"Download")}`},
 jobs(){app.innerHTML=`<h3>Jobs</h3>${AD_HTML}${list(JOBS,"Details")}`},
 affairs(){app.innerHTML=`<h3>Current Affairs</h3>${AD_HTML}${list(AFFAIRS,"Read")}`},
 contact(){app.innerHTML=`<h3>Contact</h3><div class="form"><input id="cn" placeholder="Your name"><textarea id="cm" rows="5" placeholder="Your message"></textarea><button class="btn" id="cs">Send message</button></div>`;
   $("#cs").onclick=()=>location.href="mailto:alihatim307@gmail.com?subject=TestMasterPK&body="+encodeURIComponent($("#cm").value+"\n"+$("#cn").value)}};
-function route(){const[p,a,pg]=(location.hash||"#home").slice(1).split("/");const k=V[p]?p:"home";
-  document.querySelectorAll("nav a").forEach(x=>x.classList.toggle("on",x.dataset.p===(k==="set"?"mcqs":k==="mock"?"mocks":k)));
-  V[k](decodeURIComponent(a||""),pg);window.scrollTo(0,0)}
+function route(){const[p,a,b,pg]=(location.hash||"#home").slice(1).split("/");const k=V[p]?p:"home";
+  document.querySelectorAll("nav a").forEach(x=>x.classList.toggle("on",x.dataset.p===(k==="set"||k==="leaf"?"mcqs":k==="mock"?"mocks":k)));
+  V[k](decodeURIComponent(a||""),decodeURIComponent(b||""),pg);window.scrollTo(0,0)}
 addEventListener("hashchange",route);route();
 </script></body></html>
