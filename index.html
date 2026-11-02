@@ -40,15 +40,20 @@ h3{margin:20px 0 10px;font-size:19px}
 .empty{color:var(--mu);padding:20px;text-align:center;direction:rtl}
 .form input,.form textarea{width:100%;padding:11px;border:1px solid var(--bd);border-radius:8px;margin-bottom:10px;font-size:15px;font-family:inherit}
 footer{text-align:center;color:var(--mu);font-size:13px;padding:20px}
+#st{background:#fff8e6;color:#7a5a00;text-align:center;padding:8px;font-weight:700;font-size:14px}
+#tt{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(80px);background:var(--g1);color:#fff;padding:10px 18px;border-radius:24px;opacity:0;transition:.3s;z-index:9;font-weight:600;direction:rtl;white-space:nowrap}
+#tt.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style></head>
 <body>
 <header><h1>TestMaster<span>PK</span></h1><p>Your Partner in Exam Preparation</p></header>
 <nav id="nav"></nav>
+<div id="st"></div>
 <main id="app"></main>
 <footer>© 2026 TestMasterPK</footer>
 <script src="data.js"></script>
 <script src="subjects.js"></script>
 <script src="tree.js"></script>
+<script src="mcqs.js"></script>
 <script>
 const $=s=>document.querySelector(s),app=$("#app"),enc=encodeURIComponent;
 const PAGES=[["home","Home"],["mcqs","MCQs"],["papers","Past Papers"],["mocks","Mock Tests"],["notes","PDF Notes"],["jobs","Jobs"],["affairs","Current Affairs"],["contact","Contact"]];
@@ -58,30 +63,39 @@ const AD_HTML=`<div class="ad">Advertisement - AdSense code here</div>`;
 const AD_EVERY=5,PER=10,SETS={...DEPTS,...SUBJECTS};
 const parse=s=>{const p=s.split("|");return{q:p[0],o:p.slice(1,5),a:+p[5],u:p[6]||"",e:p[7]||""}};
 const names=t=>Object.keys(TREE).filter(n=>TREE[n].t===t);
-const leafQ=(n,k)=>{let a=LEAF[n+"/"+k];if(a===undefined)a=(TREE[n]&&TREE[n].k[0]===k)?(SETS[n]||[]):[];return a.map(parse)};
+const leafQ=(n,k)=>{let a=LEAF[n+"/"+k];if(typeof a==="string")a=LEAF[a.slice(1)];if(a===undefined)a=(TREE[n]&&TREE[n].k[0]===k)?(SETS[n]||[]):[];return a.map(parse)};
 const leaves=()=>Object.keys(TREE).flatMap(n=>TREE[n].k.map(k=>[n,k]));
 const all=()=>leaves().flatMap(([n,k])=>leafQ(n,k).map(m=>({...m,n,k})));
 const list=(a,b)=>a.length?a.map(x=>`<div class="item"><div>${x[0]}<small>${x[1]}</small></div><a class="dl" href="${x[2]}" target="_blank">${b}</a></div>`).join(""):`<div class="empty">No items yet.</div>`;
 const grid=a=>`<div class="grid">${a.map(n=>`<a class="cat" href="#set/${enc(n)}">${n}</a>`).join("")}</div>`;
 function mcqHTML(a,start){return a.map((m,i)=>`<div class="q" data-a="${m.a}"><b>${start+i+1}. ${m.q}</b>${m.u?`<div class="ur">${m.u}</div>`:""}${m.o.map((o,j)=>`<button class="opt" data-j="${j}">${o}</button>`).join("")}${m.e?`<div class="ex">${m.e}</div>`:""}</div>${(start+i+1)%AD_EVERY===0?AD_HTML:""}`).join("")}
-function reveal(q,pick){const a=+q.dataset.a,o=q.querySelectorAll(".opt");q.dataset.done=1;o[a].classList.add("ok");if(pick!==undefined&&pick!==a)o[pick].classList.add("no");const e=q.querySelector(".ex");if(e)e.style.display="block"}
+function reveal(q,pick){const a=+q.dataset.a,o=q.querySelectorAll(".opt");q.dataset.done=1;if(pick!==undefined)fb(pick===a);o[a].classList.add("ok");if(pick!==undefined&&pick!==a)o[pick].classList.add("no");const e=q.querySelector(".ex");if(e)e.style.display="block"}
 function bind(){document.querySelectorAll(".q[data-a]").forEach(q=>q.onclick=e=>{const b=e.target.closest(".opt");if(!b||q.dataset.done)return;reveal(q,+b.dataset.j)});
   const sa=$("#sa");if(sa)sa.onclick=()=>document.querySelectorAll(".q[data-a]").forEach(q=>reveal(q))}
+const S=(()=>{try{return JSON.parse(localStorage.tm||"{}")}catch(e){return{}}})();
+const sv=()=>{try{localStorage.tm=JSON.stringify(S)}catch(e){}};
+function stats(){$("#st").innerHTML=`🔥 ${S.days||0} day streak &nbsp;·&nbsp; ⭐ ${S.xp||0} XP`}
+function streak(){const t=new Date().toDateString(),y=new Date(Date.now()-864e5).toDateString();if(S.last!==t){S.days=S.last===y?(S.days||0)+1:1;S.last=t;sv()}stats()}
+function toast(t){let e=$("#tt");if(!e){e=document.createElement("div");e.id="tt";document.body.appendChild(e)}e.textContent=t;e.className="show";clearTimeout(e.t);e.t=setTimeout(()=>e.className="",1600)}
+let run=0;
+function fb(ok){run=ok?run+1:0;if(ok){S.xp=(S.xp||0)+10;sv();stats()}
+  const G=["شاباش! 🎉","زبردست! 💪","بالکل صحیح! ✅","واہ! ⭐"];
+  toast(ok?(run>=3?`🔥 ${run} درست جوابات لگاتار!`:G[Math.floor(Math.random()*G.length)]+" +10 XP"):"کوئی بات نہیں، اگلا سوال آپ کا ہے 👍")}
 let M=null;
 function runMock(){
   if(!M.q.length){app.innerHTML=`<div class="empty">اس کے MCQs جلد شامل کیے جائیں گے۔</div>`;return}
-  if(M.i>=M.q.length){app.innerHTML=`<div class="score">${M.t}<br><b>Score: ${M.s} / ${M.q.length}</b></div><a class="btn" href="#mocks">Back to Mock Tests</a>${AD_HTML}`;return}
+  if(M.i>=M.q.length){app.innerHTML=`<div class="score">${M.t}<br><b>Score: ${M.s} / ${M.q.length}</b><br>${M.s/M.q.length>=.8?"🏆 شاندار! آپ تیار ہیں":M.s/M.q.length>=.5?"👍 اچھا، تھوڑی اور محنت":"💪 دوبارہ کوشش کریں، آپ بہتر ہوں گے"}</div><a class="btn" href="#mocks">Back to Mock Tests</a>${AD_HTML}`;return}
   const q=M.q[M.i];
   app.innerHTML=`<h3>${M.t}</h3><div class="q"><b>Question ${M.i+1} of ${M.q.length}<br>${q.q}</b>${q.u?`<div class="ur">${q.u}</div>`:""}${q.o.map((o,j)=>`<button class="opt" data-j="${j}">${o}</button>`).join("")}</div>`;
   app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
-    if(+b.dataset.j===q.a)M.s++;
+    if(+b.dataset.j===q.a)M.s++;fb(+b.dataset.j===q.a);
     app.querySelectorAll(".opt").forEach((o,j)=>{o.disabled=true;if(j===q.a)o.classList.add("ok")});
     if(+b.dataset.j!==q.a)b.classList.add("no");
     setTimeout(()=>{M.i++;runMock()},900)})}
 const V={
 home(){app.innerHTML=`<div class="hero"><h2>Prepare Smarter, Achieve More!</h2><p>Free Online Study Resources for Pakistan Government Job Tests.</p>
 <div class="sb"><input id="s" placeholder="Search MCQs, Past Papers, Jobs..."><button class="btn" id="sg">Search</button></div></div>
-<div id="res"></div><h3>Departments</h3>${grid(names("d"))}<h3>Subjects</h3>${grid(names("s"))}${AD_HTML}
+<div id="res"></div><a class="btn" style="display:block;text-align:center;margin-top:14px" href="#daily">🎯 Daily Challenge - 5 Quick Questions</a><h3>Departments</h3>${grid(names("d"))}<h3>Subjects</h3>${grid(names("s"))}${AD_HTML}
 <h3>Latest Jobs</h3>${list(JOBS.slice(0,3),"Details")}`;
   const go=()=>{const k=$("#s").value.trim().toLowerCase();if(!k){$("#res").innerHTML="";return}
     const r=[...all().filter(m=>m.q.toLowerCase().includes(k)).map(m=>[m.q,m.n+" - "+m.k,`#leaf/${enc(m.n)}/${enc(m.k)}`]),...[...PAPERS,...JOBS,...NOTES].filter(x=>x[0].toLowerCase().includes(k))];
@@ -98,6 +112,7 @@ leaf(n,k,pg){if(!TREE[n])return location.hash="mcqs";
   <div class="pg">${p>1?`<a class="btn g" href="${b}/${p-1}">Previous</a>`:"<span></span>"}<span>Page ${p} of ${pages}</span>${p<pages?`<a class="btn" href="${b}/${p+1}">Next</a>`:"<span></span>"}</div>`;bind()},
 mocks(){const L=leaves().filter(([n,k])=>leafQ(n,k).length);
   app.innerHTML=`<h3>Mock Tests</h3>${AD_HTML}${L.map(([n,k])=>`<div class="item"><div>${n} - ${k}<small>Mock Test</small></div><a class="dl" href="#mock/${enc(n)}/${enc(k)}">Start</a></div>`).join("")||'<div class="empty">Coming soon.</div>'}`},
+daily(){M={t:"🎯 Daily Challenge",q:[...all()].sort(()=>Math.random()-.5).slice(0,5),i:0,s:0};runMock()},
 mock(n,k){M={t:n+" - "+k,q:leafQ(n,k),i:0,s:0};runMock()},
 papers(){app.innerHTML=`<h3>Past Papers</h3>${AD_HTML}${list(PAPERS,"Download")}`},
 notes(){app.innerHTML=`<h3>PDF Notes</h3>${AD_HTML}${list(NOTES,"Download")}`},
@@ -108,5 +123,5 @@ contact(){app.innerHTML=`<h3>Contact</h3><div class="form"><input id="cn" placeh
 function route(){const[p,a,b,pg]=(location.hash||"#home").slice(1).split("/");const k=V[p]?p:"home";
   document.querySelectorAll("nav a").forEach(x=>x.classList.toggle("on",x.dataset.p===(k==="set"||k==="leaf"?"mcqs":k==="mock"?"mocks":k)));
   V[k](decodeURIComponent(a||""),decodeURIComponent(b||""),pg);window.scrollTo(0,0)}
-addEventListener("hashchange",route);route();
+addEventListener("hashchange",route);streak();route();
 </script></body></html>
