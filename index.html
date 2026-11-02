@@ -1,272 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>TestMasterPK - Pakistan Job Test Preparation</title>
-
-<meta name="description" content="Prepare for FIA, PTS, SIBA and other Pakistan job tests with free Computer MCQs, English, Mathematics and General Knowledge.">
-
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TestMasterPK - Your Partner in Exam Preparation</title>
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background: #f5f8f7;
-    color: #19332d;
-    line-height: 1.6;
-}
-
-header {
-    background: #103d32;
-    color: white;
-    padding: 20px;
-    text-align: center;
-}
-
-header h1 {
-    font-size: 30px;
-}
-
-header span {
-    color: #f2c46d;
-}
-
-nav {
-    background: #17634e;
-    padding: 14px;
-    text-align: center;
-}
-
-nav a {
-    color: white;
-    text-decoration: none;
-    margin: 10px;
-    font-weight: bold;
-}
-
-.hero {
-    background: linear-gradient(135deg,#103d32,#21866a);
-    color: white;
-    padding: 65px 20px;
-    text-align: center;
-}
-
-.hero h2 {
-    font-size: 35px;
-    margin-bottom: 15px;
-}
-
-.hero p {
-    font-size: 17px;
-    margin-bottom: 25px;
-}
-
-.button {
-    background: #f2c46d;
-    color: #19332d;
-    padding: 12px 25px;
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: bold;
-}
-
-.container {
-    max-width: 1100px;
-    margin: auto;
-    padding: 40px 20px;
-}
-
-.container h2 {
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 28px;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(230px,1fr));
-    gap: 20px;
-}
-
-.card {
-    background: white;
-    padding: 25px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 3px 12px #00000010;
-}
-
-.card h3 {
-    color: #17634e;
-    margin-bottom: 10px;
-}
-
-.card p {
-    margin-bottom: 15px;
-    color: #586861;
-}
-
-.card a {
-    display: inline-block;
-    background: #17634e;
-    color: white;
-    padding: 9px 18px;
-    text-decoration: none;
-    border-radius: 5px;
-}
-
-.about {
-    background: white;
-    padding: 35px;
-    border-radius: 10px;
-    text-align: center;
-}
-
-footer {
-    background: #103d32;
-    color: white;
-    text-align: center;
-    padding: 30px 15px;
-}
-
-footer a {
-    color: #f2c46d;
-    text-decoration: none;
-    margin: 8px;
-}
-
-footer p {
-    margin-top: 15px;
-}
-
-@media(max-width:600px) {
-    .hero h2 {
-        font-size: 27px;
-    }
-
-    nav a {
-        display: inline-block;
-        margin: 5px;
-        font-size: 13px;
-    }
-}
-</style>
-</head>
-
+:root{--g1:#0f3d31;--g2:#1a6b54;--gold:#f2c46d;--bg:#f6f8f7;--mu:#5d716b;--bd:#dde6e2}
+*{box-sizing:border-box;margin:0}
+body{font-family:Roboto,Arial,sans-serif;background:var(--bg);color:#16302a;line-height:1.5}
+a{color:inherit;text-decoration:none}
+header{background:var(--g1);color:#fff;text-align:center;padding:16px 12px 8px}
+header h1{font-size:28px}header span{color:var(--gold)}header p{font-size:14px;opacity:.85}
+nav{background:var(--g2);display:flex;overflow-x:auto;position:sticky;top:0;z-index:5;scrollbar-width:none}
+nav a{color:#fff;padding:13px 14px;white-space:nowrap;font-weight:600;font-size:14px;border-bottom:3px solid transparent}
+nav a.on{border-color:var(--gold)}
+main{max-width:900px;margin:auto;padding:16px 14px 40px}
+.hero{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border-radius:12px;padding:26px 14px;text-align:center}
+.hero p{margin:8px 0 14px;opacity:.9}
+.sb{display:flex;gap:6px;max-width:520px;margin:auto}
+.sb input{flex:1;padding:12px;border-radius:8px;border:0;font-size:15px;min-width:0}
+.btn{background:var(--gold);color:var(--g1);border:0;padding:11px 16px;border-radius:8px;font-weight:700;font-size:15px;cursor:pointer}
+h3{margin:20px 0 10px;font-size:19px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.cat{background:#fff;border:1px solid var(--bd);border-radius:10px;padding:16px 8px;text-align:center;font-weight:700}
+.cat small{display:block;color:var(--mu);font-weight:400}
+.item{background:#fff;border:1px solid var(--bd);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.item small{color:var(--mu);display:block}
+.item a.dl{background:var(--g2);color:#fff;border-radius:6px;padding:8px 12px;font-size:13px}
+.q{background:#fff;border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:10px}
+.opt{display:block;width:100%;text-align:left;background:#f1f5f3;border:1px solid var(--bd);border-radius:8px;padding:10px;margin-top:6px;font-size:15px;cursor:pointer}
+.opt.ok{background:#d6f3df;border-color:#2e9d57}.opt.no{background:#fbdcdc;border-color:#d04646}
+.ad{background:#eef2f0;border:1px dashed #b5c4be;color:var(--mu);text-align:center;padding:16px;margin:14px 0;border-radius:8px;font-size:13px}
+.score{text-align:center;font-size:22px;padding:20px}
+.empty{color:var(--mu);padding:16px;text-align:center}
+.form input,.form textarea{width:100%;padding:11px;border:1px solid var(--bd);border-radius:8px;margin-bottom:10px;font-size:15px;font-family:inherit}
+footer{text-align:center;color:var(--mu);font-size:13px;padding:20px}
+</style></head>
 <body>
-
-<header>
-    <h1>TestMaster<span>PK</span></h1>
-    <p>Your Partner in Exam Preparation</p>
-</header>
-
-<nav>
-    <a href="index.html">Home</a>
-    <a href="#subjects">Subjects</a>
-    <a href="#about">About Us</a>
-    <a href="#contact">Contact</a>
-</nav>
-
-<section class="hero">
-    <h2>Prepare Smarter, Achieve More!</h2>
-
-    <p>
-    Free Online Study Resources for Pakistan Government Job Tests.
-    </p>
-
-    <a href="#subjects" class="button">
-    Start Learning
-    </a>
-</section>
-
-<section class="container" id="subjects">
-
-    <h2>Explore Our Preparation Categories</h2>
-
-    <div class="grid">
-
-        <div class="card">
-            <h3>FIA Preparation</h3>
-            <p>Prepare for FIA recruitment tests.</p>
-            <a href="#contact">Explore</a>
-        </div>
-
-        <div class="card">
-            <h3>Computer MCQs</h3>
-            <p>Learn Computer Fundamentals and IT.</p>
-            <a href="#contact">Explore</a>
-        </div>
-
-        <div class="card">
-            <h3>English Grammar</h3>
-            <p>Improve your English grammar and vocabulary.</p>
-            <a href="#contact">Explore</a>
-        </div>
-
-        <div class="card">
-            <h3>General Knowledge</h3>
-            <p>Improve your general knowledge.</p>
-            <a href="#contact">Explore</a>
-        </div>
-
-        <div class="card">
-            <h3>Mathematics</h3>
-            <p>Practice mathematics and reasoning.</p>
-            <a href="#contact">Explore</a>
-        </div>
-
-        <div class="card">
-            <h3>Pakistan Affairs</h3>
-            <p>Learn Pakistan History and Geography.</p>
-            <a href="#contact">Explore</a>
-        </div>
-
-    </div>
-</section>
-
-<section class="container" id="about">
-    <div class="about">
-        <h2>About TestMasterPK</h2>
-
-        <p>
-        TestMasterPK is an independent educational platform
-        designed to help students prepare for government
-        job tests and competitive examinations in Pakistan.
-        Our mission is to provide free and useful educational resources.
-        </p>
-    </div>
-</section>
-
-<section class="container" id="contact">
-    <div class="about">
-        <h2>Contact Us</h2>
-        <p>Have questions or suggestions? Contact our team.</p>
-        <p>Email: your-email@example.com</p>
-    </div>
-</section>
-
-<footer>
-    <h3>TestMasterPK</h3>
-
-    <p>
-    Free Educational Resources for Everyone.
-    </p>
-
-    <p>
-    <a href="#about">About Us</a>
-    <a href="#contact">Contact</a>
-    <a href="privacy.html">Privacy Policy</a>
-    <a href="disclaimer.html">Disclaimer</a>
-    </p>
-
-    <p>© 2026 TestMasterPK. All Rights Reserved.</p>
-</footer>
-
-</body>
-  </html>
+<header><h1>TestMaster<span>PK</span></h1><p>Your Partner in Exam Preparation</p></header>
+<nav id="nav"></nav>
+<main id="app"></main>
+<footer>© 2026 TestMasterPK</footer>
+<script src="data.js"></script>
+<script>
+const $=s=>document.querySelector(s),app=$("#app");
+const PAGES=[["home","Home"],["mcqs","MCQs"],["papers","Past Papers"],["mocks","Mock Tests"],["notes","PDF Notes"],["jobs","Jobs"],["affairs","Current Affairs"],["contact","Contact"]];
+$("#nav").innerHTML=PAGES.map(p=>`<a href="#${p[0]}" data-p="${p[0]}">${p[1]}</a>`).join("");
+const ad=()=>`<div class="ad">Advertisement - AdSense code here</div>`;
+const parse=s=>{const p=s.split("|");return{q:p[0],o:p.slice(1,5),a:+p[5]}};
+const qs=d=>(DEPTS[d]||[]).map(parse);
+const all=()=>Object.keys(DEPTS).flatMap(d=>qs(d).map(m=>({...m,d})));
+const list=(a,b)=>a.length?a.map(x=>`<div class="item"><div>${x[0]}<small>${x[1]}</small></div><a class="dl" href="${x[2]}" target="_blank">${b}</a></div>`).join(""):`<div class="empty">No items yet.</div>`;
+const deptGrid=pre=>`<div class="grid">${Object.keys(DEPTS).map(d=>`<a class="cat" href="#${pre}/${d}">${d}<small>${DEPTS[d].length} MCQs</small></a>`).join("")}</div>`;
+function mcqHTML(a){return a.map((m,i)=>`<div class="q" data-a="${m.a}"><b>${i+1}. ${m.q}</b>${m.o.map((o,j)=>`<button class="opt" data-j="${j}">${o}</button>`).join("")}</div>`).join("")}
+function bind(){document.querySelectorAll(".q[data-a]").forEach(q=>q.onclick=e=>{
+  const b=e.target.closest(".opt");if(!b||q.dataset.done)return;q.dataset.done=1;const a=+q.dataset.a;
+  q.querySelectorAll(".opt")[a].classList.add("ok");if(+b.dataset.j!==a)b.classList.add("no")})}
+let M=null;
+function runMock(){
+  if(M.i>=M.q.length){app.innerHTML=`<div class="score">${M.t}<br><b>Score: ${M.s} / ${M.q.length}</b></div><a class="btn" href="#mocks">Back to Mock Tests</a>`;return}
+  const q=M.q[M.i];
+  app.innerHTML=`<h3>${M.t}</h3><div class="q"><b>Question ${M.i+1} of ${M.q.length}<br>${q.q}</b>${q.o.map((o,j)=>`<button class="opt" data-j="${j}">${o}</button>`).join("")}</div>`;
+  app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    if(+b.dataset.j===q.a)M.s++;
+    app.querySelectorAll(".opt").forEach((o,j)=>{o.disabled=true;if(j===q.a)o.classList.add("ok")});
+    if(+b.dataset.j!==q.a)b.classList.add("no");
+    setTimeout(()=>{M.i++;runMock()},900)})}
+const V={
+home(){app.innerHTML=`<div class="hero"><h2>Prepare Smarter, Achieve More!</h2><p>Free Online Study Resources for Pakistan Government Job Tests.</p>
+<div class="sb"><input id="s" placeholder="Search MCQs, Past Papers, Jobs..."><button class="btn" id="sg">Search</button></div></div>
+<div id="res"></div><h3>Popular Departments</h3>${deptGrid("d")}${ad()}
+<h3>Latest MCQs</h3>${mcqHTML(all().slice(0,3))}<h3>Latest Jobs</h3>${list(JOBS.slice(0,3),"Details")}`;
+  bind();const go=()=>{const k=$("#s").value.trim().toLowerCase();if(!k){$("#res").innerHTML="";return}
+    const r=[...all().filter(m=>m.q.toLowerCase().includes(k)).map(m=>[m.q,"MCQ - "+m.d,"#d/"+m.d]),...[...PAPERS,...JOBS,...NOTES].filter(x=>x[0].toLowerCase().includes(k))];
+    $("#res").innerHTML=`<h3>Results</h3>${r.length?list(r,"Open"):'<div class="empty">Nothing found.</div>'}`};
+  $("#sg").onclick=go;$("#s").onkeydown=e=>{if(e.key==="Enter")go()}},
+mcqs(){app.innerHTML=`<h3>MCQs - Choose Department</h3>${deptGrid("d")}${ad()}`},
+d(n){if(!DEPTS[n])return location.hash="mcqs";
+  app.innerHTML=`<h3>${n} MCQs</h3><a class="btn" href="#mock/${n}">Start ${n} Mock Test</a>${ad()}<div style="margin-top:14px">${mcqHTML(qs(n))}</div>`;bind()},
+mocks(){app.innerHTML=`<h3>Mock Tests</h3>${ad()}${Object.keys(DEPTS).map(d=>`<div class="item"><div>${d} Mock Test<small>${DEPTS[d].length} questions</small></div><a class="dl" href="#mock/${d}">Start</a></div>`).join("")}`},
+mock(n){M={t:n+" Mock Test",q:qs(n),i:0,s:0};runMock()},
+papers(){app.innerHTML=`<h3>Past Papers</h3>${ad()}${list(PAPERS,"Download")}`},
+notes(){app.innerHTML=`<h3>PDF Notes</h3>${ad()}${list(NOTES,"Download")}`},
+jobs(){app.innerHTML=`<h3>Jobs</h3>${ad()}${list(JOBS,"Details")}`},
+affairs(){app.innerHTML=`<h3>Current Affairs</h3>${ad()}${list(AFFAIRS,"Read")}`},
+contact(){app.innerHTML=`<h3>Contact</h3><div class="form"><input id="cn" placeholder="Your name"><textarea id="cm" rows="5" placeholder="Your message"></textarea><button class="btn" id="cs">Send message</button></div>`;
+  $("#cs").onclick=()=>location.href="mailto:alihatim307@gmail.com?subject=TestMasterPK&body="+encodeURIComponent($("#cm").value+"\n"+$("#cn").value)}};
+function route(){const[p,arg]=(location.hash||"#home").slice(1).split("/");const k=V[p]?p:"home";
+  document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("on",a.dataset.p===(k==="d"?"mcqs":k==="mock"?"mocks":k)));
+  V[k](decodeURIComponent(arg||""));window.scrollTo(0,0)}
+addEventListener("hashchange",route);route();
+</script></body></html>
