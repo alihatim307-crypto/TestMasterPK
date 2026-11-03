@@ -67,7 +67,7 @@ $("#nav").innerHTML=PAGES.map(p=>`<a href="#${p[0]}" data-p="${p[0]}">${p[1]}</a
 /* اشتہار: AdSense کوڈ یہاں پیسٹ کریں۔ اشتہار ہر 5 سوالوں کے بعد آتا ہے۔ */
 const AD_HTML=`<div class="ad">Advertisement - AdSense code here</div>`;
 const AD_EVERY=5,PER=10,SETS={...DEPTS,...SUBJECTS};
-const parse=s=>{const p=s.split("|");return{q:p[0],o:p.slice(1,5),a:+p[5],u:p[6]||"",e:p[7]||""}};
+const parse=s=>{const p=s.split("|");let o=p.slice(1,5);const c=o[+p[5]];o=o.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);return{q:p[0],o,a:o.indexOf(c),u:p[6]||"",e:p[7]||""}};
 const names=t=>Object.keys(TREE).filter(n=>TREE[n].t===t);
 const rawQ=(n,k)=>{let a=LEAF[n+"/"+k];if(typeof a==="string")a=LEAF[a.slice(1)];if(a===undefined)a=(TREE[n]&&TREE[n].k[0]===k)?(SETS[n]||[]):[];return a.map(parse)};
 const uniq=a=>{const s=new Set();return a.filter(m=>!s.has(m.q)&&s.add(m.q))};
