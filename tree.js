@@ -22,7 +22,8 @@ const TREE={
 "Maths":{t:"s",k:["Arithmetic","Algebra","Percentage","Ratio","Geometry"]},
 "Urdu":{t:"s",k:["Grammar","Muhawarey","Mutradifat","Adab"]},
 "Pedagogy":{t:"s",k:["Teaching Methods","Classroom Management","Educational Psychology","Assessment"]},
-"Current Affairs":{t:"s",k:["Pakistan","International","Monthly","Yearly"]}
+"Current Affairs":{t:"s",k:["Pakistan","International","Monthly","Yearly"]},
+"Analytical Reasoning":{t:"s",k:["Verbal Reasoning","Non Verbal Reasoning","Number Series","Analogies","Coding Decoding"]}
 };
 
 // ہر عہدے/چیپٹر کے MCQs یہاں شامل کریں۔ نام: "ادارہ/عہدہ"
