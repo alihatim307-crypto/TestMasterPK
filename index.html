@@ -63,9 +63,16 @@ const AD_HTML=`<div class="ad">Advertisement - AdSense code here</div>`;
 const AD_EVERY=5,PER=10,SETS={...DEPTS,...SUBJECTS};
 const parse=s=>{const p=s.split("|");return{q:p[0],o:p.slice(1,5),a:+p[5],u:p[6]||"",e:p[7]||""}};
 const names=t=>Object.keys(TREE).filter(n=>TREE[n].t===t);
-const leafQ=(n,k)=>{let a=LEAF[n+"/"+k];if(typeof a==="string")a=LEAF[a.slice(1)];if(a===undefined)a=(TREE[n]&&TREE[n].k[0]===k)?(SETS[n]||[]):[];return a.map(parse)};
+const rawQ=(n,k)=>{let a=LEAF[n+"/"+k];if(typeof a==="string")a=LEAF[a.slice(1)];if(a===undefined)a=(TREE[n]&&TREE[n].k[0]===k)?(SETS[n]||[]):[];return a.map(parse)};
+const uniq=a=>{const s=new Set();return a.filter(m=>!s.has(m.q)&&s.add(m.q))};
+/* ہر ملازمت کے ٹیسٹ میں ان مضامین کے MCQs خود شامل ہوتے ہیں۔ فہرست بدلنی ہو تو یہاں نام بدلیں۔ */
+const MIXS=["English","General Knowledge","Pak Study","Islamiat","General Science","Computer","Maths","Current Affairs","Analytical Reasoning"];
+const subjQ=s=>uniq(TREE[s].k.flatMap(k=>rawQ(s,k)));
+const leafQ=(n,k)=>{if(!TREE[n]||TREE[n].t==="s")return rawQ(n,k);
+  const P=[rawQ(n,k),...[...MIXS,...(n==="Teachers"?["Pedagogy"]:[])].filter(x=>TREE[x]).map(subjQ)];
+  const out=[];for(let i=0;P.some(p=>i<p.length);i++)P.forEach(p=>{if(i<p.length)out.push(p[i])});return uniq(out)};
 const leaves=()=>Object.keys(TREE).flatMap(n=>TREE[n].k.map(k=>[n,k]));
-const all=()=>leaves().flatMap(([n,k])=>leafQ(n,k).map(m=>({...m,n,k})));
+const all=()=>uniq(leaves().flatMap(([n,k])=>rawQ(n,k).map(m=>({...m,n,k}))));
 const list=(a,b)=>a.length?a.map(x=>`<div class="item"><div>${x[0]}<small>${x[1]}</small></div><a class="dl" href="${x[2]}" target="_blank">${b}</a></div>`).join(""):`<div class="empty">No items yet.</div>`;
 const grid=a=>`<div class="grid">${a.map(n=>`<a class="cat" href="#set/${enc(n)}">${n}</a>`).join("")}</div>`;
 function mcqHTML(a,start){return a.map((m,i)=>`<div class="q" data-a="${m.a}"><b>${start+i+1}. ${m.q}</b>${m.u?`<div class="ur">${m.u}</div>`:""}${m.o.map((o,j)=>`<button class="opt" data-j="${j}">${o}</button>`).join("")}${m.e?`<div class="ex">${m.e}</div>`:""}</div>${(start+i+1)%AD_EVERY===0?AD_HTML:""}`).join("")}
