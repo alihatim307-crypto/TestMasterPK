@@ -44,3 +44,10 @@ const LEAF={
 "Powerhouse of the cell is?|Nucleus|Mitochondria|Ribosome|Vacuole|1|خلیے کا پاور ہاؤس کسے کہتے ہیں؟|مائٹوکونڈریا توانائی بناتا ہے۔"
 ]
 };
+
+// addQ: نئے MCQs جوڑتا ہے۔ دونوں فارمیٹ سمجھتا ہے:
+// 1) "سوال|A|B|C|D|0|اردو|وضاحت"   2) ChatGPT والا الگ الگ ٹکڑوں کا فارمیٹ: "سوال","A","B","C","D",0,"اردو","وضاحت",
+window.addQ=function(k,a){
+  if(a.length>=8&&String(a[0]).indexOf("|")<0){
+    const o=[];for(let i=0;i+5<a.length;i+=8)o.push(a.slice(i,i+8).map(x=>x==null?"":String(x)).join("|"));a=o}
+  LEAF[k]=(Array.isArray(LEAF[k])?LEAF[k]:[]).concat(a)};
