@@ -69,13 +69,13 @@ const AD_HTML=`<div class="ad">Advertisement - AdSense code here</div>`;
 const AD_EVERY=5,PER=10,SETS={...DEPTS,...SUBJECTS};
 const parse=s=>{const p=s.split("|");let o=p.slice(1,5);const c=o[+p[5]];o=o.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);return{q:p[0],o,a:o.indexOf(c),u:p[6]||"",e:p[7]||""}};
 const names=t=>Object.keys(TREE).filter(n=>TREE[n].t===t);
-const rawQ=(n,k)=>{let a=LEAF[n+"/"+k];if(typeof a==="string")a=LEAF[a.slice(1)];if(a===undefined)a=(TREE[n]&&TREE[n].k[0]===k)?(SETS[n]||[]):[];return a.map(parse)};
+const rawQ=(n,k)=>{let a=LEAF[n+"/"+k];if(typeof a==="string")a=LEAF[a.slice(1)];const d=(TREE[n]&&TREE[n].k[0]===k)?(SETS[n]||[]):[];a=a===undefined?d:(Array.isArray(a)?d.concat(a):a);return a.map(parse)};
 const uniq=a=>{const s=new Set();return a.filter(m=>!s.has(m.q)&&s.add(m.q))};
 /* ہر ملازمت کے ٹیسٹ میں ان مضامین کے MCQs خود شامل ہوتے ہیں۔ فہرست بدلنی ہو تو یہاں نام بدلیں۔ */
 const MIXS=["English","General Knowledge","Pak Study","Islamiat","General Science","Computer","Maths","Current Affairs","Analytical Reasoning"];
 const subjQ=s=>uniq(TREE[s].k.flatMap(k=>rawQ(s,k)));
 const leafQ=(n,k)=>{if(!TREE[n]||TREE[n].t==="s")return rawQ(n,k);
-  const P=[rawQ(n,k),...[...MIXS,...(n==="Teachers"?["Pedagogy"]:[])].filter(x=>TREE[x]).map(subjQ)];
+  const P=[rawQ(n,k),...[...MIXS,...(n==="Teachers"?["Pedagogy"]:[])].filter(x=>TREE[x]).map(subjQ),uniq(names("d").flatMap(x=>rawQ(x,TREE[x].k[0])))];
   const out=[];for(let i=0;P.some(p=>i<p.length);i++)P.forEach(p=>{if(i<p.length)out.push(p[i])});return uniq(out)};
 const leaves=()=>Object.keys(TREE).flatMap(n=>TREE[n].k.map(k=>[n,k]));
 const all=()=>uniq(leaves().flatMap(([n,k])=>rawQ(n,k).map(m=>({...m,n,k}))));
